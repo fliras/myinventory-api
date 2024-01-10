@@ -1,5 +1,6 @@
 {
-  "extends": "eslint-config-standard-with-typescript",
+  "extends": ["eslint-config-standard-with-typescript", "prettier"],
+  "plugins": ["prettier"],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
@@ -7,6 +8,7 @@
     "@typescript-eslint/prefer-nullish-coalescing": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/method-signature-style": "off",
-    "@typescript-eslint/consistent-type-imports": "off"
+    "@typescript-eslint/consistent-type-imports": "off",
+    "prettier/prettier": ["prettier"]
   }
 }
