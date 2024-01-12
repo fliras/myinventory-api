@@ -1,0 +1,39 @@
+inventários:
+- cadastro de inventários
+  * receber os dados;
+  * sanitizar e validar os dados;
+  * validar se quem cadastra é admin;
+  * cadastrar;
+
+- edição de inventários
+  * receber os dados;
+  * sanitizar e validar os dados;
+  * validar se quem edita é admin;
+  * editar;
+
+- exclusão de inventários
+  * receber id do inventário;
+  * verificar se quem excluir é admin;
+  * excluir;
+
+- listagem de inventários
+  * verificar se quem lista é admin;
+  * listar;
+
+- obtenção de inventário por id
+  * obter id do inventário;
+  * verificar se quem obtem é admin;
+  * verificar se o inventário existe;
+  * retornar inventário;
+
+- extração de relatório
+  * obter id do inventário e formato do relatório;
+  * verificar se o inventário existe;
+  * verificar se quem extrai é admin;
+  * retornar relatório;
+
+- gerar qr codes
+  * receber parametros de geração;
+  * verificar se quem gera é admin;
+  * retornar pdf dos qr codes;
+

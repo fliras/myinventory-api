@@ -1,0 +1,28 @@
+itens:
+- cadastro de itens
+  * receber dados;
+  * sanitizar e validar dados;
+  * cadastrar;
+
+- edição de itens
+  * receber dados;
+  * sanitizar e validar dados;
+  * verificar se o item existe;
+  * verificar se quem edita é quem criou ou o adm;
+  * editar;
+
+- exclusão de itens
+  * receber id do item;
+  * verificar se item existe;
+  * verificar se quem exclui é quem criou ou o adm;
+  * excluir;
+
+- listagem de itens
+  * verificar se quem lista tem acesso ao inventário ou é adm;
+  * listar;
+
+- obtenção de item por id
+  * receber id do item;
+  * verificar se o item existe;
+  * verificar se quem obtém tem acesso ao inventário ou é adm;
+  * retornar item;

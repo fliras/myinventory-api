@@ -1,0 +1,40 @@
+usuários:
+- cadastro de usuários
+  * receber dados;
+  * verificar se quem cria é admin;
+  * sanitizar e validar os campos obrigatórios;
+  * verificar se o username não está em uso;
+  * verificar se o role escolhido existe;
+  * criar;
+
+- edição de usuários
+  * receber dados;
+  * verificar se quem edita é admin;
+  * sanitizar e validar os campos obrigatórios;
+  * verificar se as novas informações são consistentes;
+  * editar;
+
+- exclusão de usuários
+  * receber id do usuário;
+  * verificar se usuário existe;
+  * verificar se quem exclui é admin;
+  * marcar o usuário como excluído;
+
+- listagem de usuários
+  * verificar se quem lista é admin;
+  * retornar usuários cadastrados;
+
+- obtenção de usuário por id
+  * verificar se quem obtém é admin;
+  * verificar se usuário existe;
+  * retornar dados do usuário;
+
+- recuperação de senha
+  * receber dados;
+  * verificar se o usuário precisa recuperar a senha;
+  * alterar a senha;
+
+- vincular usuário a inventários
+  * receber relação de inventários e o usuário em questão;
+  * verificar se quem vincula é admin;
+  * vincular usuário aos inventários;
