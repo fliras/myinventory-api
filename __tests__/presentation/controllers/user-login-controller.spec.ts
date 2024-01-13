@@ -3,7 +3,7 @@ import { badRequest, serverError, ok } from '@/presentation/helpers/http';
 
 class UserLoginUsecaseStub {
   result = 'any-token';
-  async handle() {
+  async handle(): Promise<string | Error> {
     return this.result;
   }
 }
@@ -52,6 +52,14 @@ describe('UserLoginController', () => {
     });
     const output = await sut.handle({ username: 'any-username', password: 'any-password' });
     expect(output).toEqual(serverError());
+  });
+
+  it('Should return badRequest if userLoginUsecase returns an error', async () => {
+    const { userLoginUsecase, sut } = makeSut();
+    const error = new Error();
+    jest.spyOn(userLoginUsecase, 'handle').mockResolvedValueOnce(new Error());
+    const output = await sut.handle({ username: 'any-username', password: 'any-password' });
+    expect(output).toEqual(badRequest(error));
   });
 
   it('Should return ok on success', async () => {
