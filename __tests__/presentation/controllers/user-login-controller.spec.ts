@@ -1,5 +1,5 @@
 import UserLoginController from '@/presentation/controllers/user-login-controller';
-import { badRequest } from '@/presentation/helpers/http';
+import { badRequest, serverError } from '@/presentation/helpers/http';
 
 class UserLoginUsecaseStub {
   async handle() {
@@ -44,5 +44,14 @@ describe('UserLoginController', () => {
       username: 'any-username',
       password: 'any-password',
     });
+  });
+
+  it('Should return serverError if userLoginUsecase throws', async () => {
+    const { userLoginUsecase, sut } = makeSut();
+    jest.spyOn(userLoginUsecase, 'handle').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const output = await sut.handle({ username: 'any-username', password: 'any-password' });
+    expect(output).toEqual(serverError())
   });
 });
