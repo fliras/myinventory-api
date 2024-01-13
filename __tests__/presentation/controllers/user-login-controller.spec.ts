@@ -1,5 +1,6 @@
 import UserLoginController from '@/presentation/controllers/user-login-controller';
 import { badRequest, serverError, ok } from '@/presentation/helpers/http';
+import MissingParamError from '@/presentation/errors/missing-param-error';
 
 class UserLoginUsecaseStub {
   result = 'any-token';
@@ -22,49 +23,56 @@ const makeSut = (): sutTypes => {
   };
 };
 
+const mockRequest = () => ({
+  username: 'any-username',
+  password: 'any-password',
+});
+
+const mockThrow = () => {
+  throw new Error();
+};
+
 describe('UserLoginController', () => {
   it('Should return badRequest if username is not provided', async () => {
     const { sut } = makeSut();
-    const output = await sut.handle({ password: 'any-password' });
-    expect(output).toEqual(badRequest(new Error('Missing param: username')));
+    const { password } = mockRequest();
+    const output = await sut.handle({ password });
+    expect(output).toEqual(badRequest(new MissingParamError('username')));
   });
 
   it('Should return badRequest if password is not provided', async () => {
     const { sut } = makeSut();
-    const output = await sut.handle({ username: 'any-username' });
-    expect(output).toEqual(badRequest(new Error('Missing param: password')));
+    const { username } = mockRequest();
+    const output = await sut.handle({ username });
+    expect(output).toEqual(badRequest(new MissingParamError('password')));
   });
 
   it('Should call userLoginUsecase with the correct values', async () => {
     const { userLoginUsecase, sut } = makeSut();
     const userLoginSpy = jest.spyOn(userLoginUsecase, 'handle');
-    await sut.handle({ username: 'any-username', password: 'any-password' });
-    expect(userLoginSpy).toHaveBeenCalledWith({
-      username: 'any-username',
-      password: 'any-password',
-    });
-  });
-
-  it('Should return serverError if userLoginUsecase throws', async () => {
-    const { userLoginUsecase, sut } = makeSut();
-    jest.spyOn(userLoginUsecase, 'handle').mockImplementationOnce(() => {
-      throw new Error();
-    });
-    const output = await sut.handle({ username: 'any-username', password: 'any-password' });
-    expect(output).toEqual(serverError());
+    const request = mockRequest();
+    await sut.handle(request);
+    expect(userLoginSpy).toHaveBeenCalledWith(request);
   });
 
   it('Should return badRequest if userLoginUsecase returns an error', async () => {
     const { userLoginUsecase, sut } = makeSut();
     const error = new Error();
     jest.spyOn(userLoginUsecase, 'handle').mockResolvedValueOnce(new Error());
-    const output = await sut.handle({ username: 'any-username', password: 'any-password' });
+    const output = await sut.handle(mockRequest());
     expect(output).toEqual(badRequest(error));
+  });
+
+  it('Should return serverError if userLoginUsecase throws', async () => {
+    const { userLoginUsecase, sut } = makeSut();
+    jest.spyOn(userLoginUsecase, 'handle').mockImplementationOnce(mockThrow);
+    const output = await sut.handle(mockRequest());
+    expect(output).toEqual(serverError());
   });
 
   it('Should return ok on success', async () => {
     const { userLoginUsecase, sut } = makeSut();
-    const output = await sut.handle({ username: 'any-username', password: 'any-password' });
+    const output = await sut.handle(mockRequest());
     const expectedOutput = ok({ accessToken: userLoginUsecase.result });
     expect(output).toEqual(expectedOutput);
   });
