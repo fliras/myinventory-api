@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "jest --passWithNoTests --no-cache --runInBand",
-    "test:watch": "npm t -- --watch",
+    "test:watch": "npm t -- --watch --silent",
     "test:staged": "npm t -- --findRelatedTests",
     "test:coverage": "npm t -- --coverage"
   },
