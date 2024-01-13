@@ -1,6 +1,6 @@
 import UserLoginController from '@/presentation/controllers/user-login-controller';
 import { badRequest, serverError, ok } from '@/presentation/helpers/http';
-import MissingParamError from '@/presentation/errors/missing-param-error';
+import { Validator } from '@/presentation/contracts';
 
 class UserLoginUsecaseStub {
   result = 'any-token';
@@ -9,16 +9,23 @@ class UserLoginUsecaseStub {
   }
 }
 
+class ValidatorStub implements Validator {
+  validate(): Error | void {}
+}
+
 type sutTypes = {
+  validator: ValidatorStub;
   userLoginUsecase: UserLoginUsecaseStub;
   sut: UserLoginController;
 };
 
 const makeSut = (): sutTypes => {
+  const validator = new ValidatorStub();
   const userLoginUsecase = new UserLoginUsecaseStub();
-  const sut = new UserLoginController(userLoginUsecase);
+  const sut = new UserLoginController(validator, userLoginUsecase);
   return {
     userLoginUsecase,
+    validator,
     sut,
   };
 };
@@ -33,18 +40,20 @@ const mockThrow = () => {
 };
 
 describe('UserLoginController', () => {
-  it('Should return badRequest if username is not provided', async () => {
-    const { sut } = makeSut();
-    const { password } = mockRequest();
-    const output = await sut.handle({ password });
-    expect(output).toEqual(badRequest(new MissingParamError('username')));
+  it('Should call validator with correct values', async () => {
+    const { validator, sut } = makeSut();
+    const validatorSpy = jest.spyOn(validator, 'validate');
+    const request = mockRequest();
+    await sut.handle(request);
+    expect(validatorSpy).toHaveBeenCalledWith(request);
   });
 
-  it('Should return badRequest if password is not provided', async () => {
-    const { sut } = makeSut();
-    const { username } = mockRequest();
-    const output = await sut.handle({ username });
-    expect(output).toEqual(badRequest(new MissingParamError('password')));
+  it('Should return badRequest if validator returns an error', async () => {
+    const { validator, sut } = makeSut();
+    const error = new Error();
+    jest.spyOn(validator, 'validate').mockReturnValueOnce(error);
+    const output = await sut.handle(mockRequest());
+    expect(output).toEqual(badRequest(error));
   });
 
   it('Should call userLoginUsecase with the correct values', async () => {
