@@ -1,11 +1,11 @@
 import { badRequest, serverError, ok } from '@/presentation/helpers/http';
 import { Controller, HttpResponse, Validator } from '@/presentation/contracts';
-import { UserLoginUsecase } from '@/domain/contracts';
+import { UserLogin } from '@/domain/contracts';
 
 export default class UserLoginController implements Controller {
   constructor(
     private readonly validator: Validator,
-    private readonly userLoginUsecase: UserLoginUsecase,
+    private readonly userLoginUsecase: UserLogin,
   ) {}
 
   async handle(request: UserLoginController.Request): Promise<HttpResponse> {
