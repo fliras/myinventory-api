@@ -1,11 +1,10 @@
 import UserLoginController from '@/presentation/controllers/user-login-controller';
-import { badRequest, serverError } from '@/presentation/helpers/http';
+import { badRequest, serverError, ok } from '@/presentation/helpers/http';
 
 class UserLoginUsecaseStub {
+  result = 'any-token';
   async handle() {
-    return {
-      accessToken: 'any-token',
-    };
+    return this.result;
   }
 }
 
@@ -52,6 +51,13 @@ describe('UserLoginController', () => {
       throw new Error();
     });
     const output = await sut.handle({ username: 'any-username', password: 'any-password' });
-    expect(output).toEqual(serverError())
+    expect(output).toEqual(serverError());
+  });
+
+  it('Should return ok on success', async () => {
+    const { userLoginUsecase, sut } = makeSut();
+    const output = await sut.handle({ username: 'any-username', password: 'any-password' });
+    const expectedOutput = ok({ accessToken: userLoginUsecase.result });
+    expect(output).toEqual(expectedOutput);
   });
 });
