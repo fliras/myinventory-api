@@ -1,10 +1,11 @@
 import { badRequest, serverError, ok } from '@/presentation/helpers/http';
 import MissingParamError from '@/presentation/errors/missing-param-error';
+import { Controller, HttpResponse } from '@/presentation/contracts';
 
-export default class UserLoginController {
+export default class UserLoginController implements Controller {
   constructor(private readonly userLoginUsecase: any) {}
 
-  async handle(request: any) {
+  async handle(request: any): Promise<HttpResponse> {
     try {
       if (!request.username) return badRequest(new MissingParamError('username'));
       if (!request.password) return badRequest(new MissingParamError('password'));
