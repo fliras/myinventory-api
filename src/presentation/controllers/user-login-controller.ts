@@ -1,4 +1,4 @@
-import { badRequest, serverError } from '@/presentation/helpers/http';
+import { badRequest, serverError, ok } from '@/presentation/helpers/http';
 
 export default class UserLoginController {
   constructor(private readonly userLoginUsecase: any) {}
@@ -7,7 +7,8 @@ export default class UserLoginController {
     try {
       if (!request.username) return badRequest(new Error('Missing param: username'));
       if (!request.password) return badRequest(new Error('Missing param: password'));
-      await this.userLoginUsecase.handle(request);
+      const accessToken = await this.userLoginUsecase.handle(request);
+      return ok({ accessToken });
     } catch (error) {
       return serverError();
     }
