@@ -31,6 +31,12 @@ describe('ValidationComposite', () => {
     const output = sut.validate(mockInput());
     expect(output).toEqual(error);
   });
+
+  it('Shouldnt return void if no validator returns an error', () => {
+    const { sut } = makeSut();
+    const output = sut.validate(mockInput());
+    expect(output).toEqual(undefined);
+  });
 });
 
 // chamar corretamente
