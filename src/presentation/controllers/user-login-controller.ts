@@ -1,6 +1,5 @@
 import { badRequest, serverError, ok } from '@/presentation/helpers/http';
-import { Controller, HttpResponse } from '@/presentation/contracts';
-import { Validator } from '../contracts/validator';
+import { Controller, HttpResponse, Validator } from '@/presentation/contracts';
 
 export default class UserLoginController implements Controller {
   constructor(
@@ -8,7 +7,7 @@ export default class UserLoginController implements Controller {
     private readonly userLoginUsecase: any,
   ) {}
 
-  async handle(request: any): Promise<HttpResponse> {
+  async handle(request: UserLoginController.Request): Promise<HttpResponse> {
     try {
       const validation = this.validator.validate(request);
       if (validation instanceof Error) return badRequest(validation);
@@ -20,4 +19,11 @@ export default class UserLoginController implements Controller {
       return serverError();
     }
   }
+}
+
+export namespace UserLoginController {
+  export type Request = {
+    username: string;
+    password: string;
+  };
 }
