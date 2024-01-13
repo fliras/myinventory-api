@@ -13,6 +13,7 @@ export default class UserLoginController implements Controller {
       if (result instanceof Error) return badRequest(result);
       return ok({ accessToken: result });
     } catch (error) {
+      console.error(error);
       return serverError();
     }
   }
