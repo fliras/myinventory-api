@@ -1,8 +1,9 @@
 import UserLoginController from '@/presentation/controllers/user-login-controller';
 import { badRequest, serverError, ok } from '@/presentation/helpers/http';
 import { Validator } from '@/presentation/contracts';
+import { UserLoginUsecase } from '@/domain/contracts';
 
-class UserLoginUsecaseStub {
+class UserLoginUsecaseStub implements UserLoginUsecase {
   result = 'any-token';
   async handle(): Promise<string | Error> {
     return this.result;
