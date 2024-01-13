@@ -23,6 +23,10 @@ const mockInput = () => ({
   anyField: 'any-value',
 });
 
+const mockThrow = () => {
+  throw new Error();
+};
+
 describe('ValidationComposite', () => {
   it('Should return an error if any validator returns an error', () => {
     const { validators, sut } = makeSut();
@@ -32,14 +36,15 @@ describe('ValidationComposite', () => {
     expect(output).toEqual(error);
   });
 
+  it('Should throw if any validator throws', () => {
+    const { validators, sut } = makeSut();
+    jest.spyOn(validators[1], 'validate').mockImplementationOnce(mockThrow);
+    expect(sut.validate).toThrow();
+  });
+
   it('Shouldnt return void if no validator returns an error', () => {
     const { sut } = makeSut();
     const output = sut.validate(mockInput());
     expect(output).toEqual(undefined);
   });
 });
-
-// chamar corretamente
-// quebrar se algum quebrar
-// retornar o primeiro erro que houver
-// retornar void se nenhum retornar erro
