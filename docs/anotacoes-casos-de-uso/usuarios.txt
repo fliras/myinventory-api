@@ -1,4 +1,9 @@
 usuários:
+- login de usuário;
+  * receber dados;
+  * sanitizar e validar dados;
+  * retornar token de acesso;
+
 - cadastro de usuários
   * receber dados;
   * verificar se quem cria é admin;
