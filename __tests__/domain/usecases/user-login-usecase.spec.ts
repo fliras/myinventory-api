@@ -1,4 +1,4 @@
-import UserLoginUsecase from '@/domain/usecases/user-login-usecase';
+import { UserLoginUsecase } from '@/domain/usecases';
 import { UserLogin } from '@/domain/contracts';
 import { LoadUserByUsername, HashComparer, Encrypter } from '@/data/contracts';
 import { UserNotFoundError, InvalidPasswordError, InactiveUserError } from '@/domain/errors';

@@ -3,7 +3,7 @@ import { UserLogin } from '@/domain/contracts';
 import { InactiveUserError, InvalidPasswordError, UserNotFoundError } from '@/domain/errors';
 import { StatusTypes } from '@/domain/helpers';
 
-export default class UserLoginUsecase implements UserLogin {
+export class UserLoginUsecase implements UserLogin {
   constructor(
     private readonly loadUserByUsernameRepository: LoadUserByUsername,
     private readonly hashComparer: HashComparer,
