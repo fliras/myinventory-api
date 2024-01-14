@@ -1,6 +1,6 @@
 import UserLoginUsecase from '@/domain/usecases/user-login-usecase';
 import { UserLogin } from '@/domain/contracts';
-import { LoadUserByUsername, HashComparer } from '@/data/contracts';
+import { LoadUserByUsername, HashComparer, Encrypter } from '@/data/contracts';
 import { UserNotFoundError, InvalidPasswordError } from '@/domain/errors';
 import { StatusTypes, UserRoles } from '@/domain/helpers';
 
@@ -27,19 +27,29 @@ class HashComparerStub implements HashComparer {
   }
 }
 
+class EncrypterStub implements Encrypter {
+  result = 'any-token';
+  async encrypt() {
+    return this.result;
+  }
+}
+
 type SutTypes = {
   loadUserByUsernameRepository: LoadUserByUsernameRepositoryStub;
   hashComparer: HashComparerStub;
+  encrypter: EncrypterStub;
   sut: UserLoginUsecase;
 };
 
 const makeSut = (): SutTypes => {
   const loadUserByUsernameRepository = new LoadUserByUsernameRepositoryStub();
   const hashComparer = new HashComparerStub();
-  const sut = new UserLoginUsecase(loadUserByUsernameRepository, hashComparer);
+  const encrypter = new EncrypterStub();
+  const sut = new UserLoginUsecase(loadUserByUsernameRepository, hashComparer, encrypter);
   return {
     loadUserByUsernameRepository,
     hashComparer,
+    encrypter,
     sut,
   };
 };
@@ -98,5 +108,14 @@ describe('UserLoginUsecase', () => {
     jest.spyOn(hashComparer, 'compare').mockImplementationOnce(mockThrow);
     const output = sut.handle(mockInput());
     expect(output).rejects.toThrow();
+  });
+
+  it('Should call encrypter with the correct values', async () => {
+    const { encrypter, loadUserByUsernameRepository, sut } = makeSut();
+    const encrypterSpy = jest.spyOn(encrypter, 'encrypt');
+    const input = mockInput();
+    await sut.handle(input);
+    const { id, role } = loadUserByUsernameRepository.result;
+    expect(encrypterSpy).toHaveBeenCalledWith({ id, role });
   });
 });
