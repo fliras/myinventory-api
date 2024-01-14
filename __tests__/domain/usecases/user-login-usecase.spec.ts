@@ -1,6 +1,7 @@
 import UserLoginUsecase from '@/domain/usecases/user-login-usecase';
 import { UserLogin } from '@/domain/contracts';
 import { CheckUserByUsername } from '@/data/contracts';
+import { UserNotFoundError } from '@/domain/errors';
 
 class CheckUserByUsernameRepositoryStub implements CheckUserByUsername {
   async checkByUsername() {
@@ -34,5 +35,12 @@ describe('UserLoginUsecase', () => {
     const input = mockInput();
     await sut.handle(input);
     expect(checkUserSpy).toHaveBeenCalledWith(input.username);
+  });
+
+  it('Should return UserNotFoundError if CheckUserByUsernameRepository returns false', async () => {
+    const { checkUserByUsernameRepository, sut } = makeSut();
+    jest.spyOn(checkUserByUsernameRepository, 'checkByUsername').mockResolvedValueOnce(false);
+    const output = await sut.handle(mockInput());
+    expect(output).toEqual(new UserNotFoundError());
   });
 });
