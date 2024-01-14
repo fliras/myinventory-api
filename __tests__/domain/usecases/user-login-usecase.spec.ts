@@ -28,6 +28,10 @@ const mockInput = (): UserLogin.Input => ({
   password: 'any-password',
 });
 
+const mockThrow = () => {
+  throw new Error();
+};
+
 describe('UserLoginUsecase', () => {
   it('Should call CheckUserByUsernameRepository with correct values', async () => {
     const { checkUserByUsernameRepository, sut } = makeSut();
@@ -42,5 +46,12 @@ describe('UserLoginUsecase', () => {
     jest.spyOn(checkUserByUsernameRepository, 'checkByUsername').mockResolvedValueOnce(false);
     const output = await sut.handle(mockInput());
     expect(output).toEqual(new UserNotFoundError());
+  });
+
+  it('Should throw if CheckUserByUsernameRepository throws', async () => {
+    const { checkUserByUsernameRepository, sut } = makeSut();
+    jest.spyOn(checkUserByUsernameRepository, 'checkByUsername').mockImplementationOnce(mockThrow);
+    const output = sut.handle(mockInput());
+    expect(output).rejects.toThrow();
   });
 });
