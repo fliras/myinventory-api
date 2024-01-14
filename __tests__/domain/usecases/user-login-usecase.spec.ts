@@ -1,7 +1,7 @@
 import UserLoginUsecase from '@/domain/usecases/user-login-usecase';
 import { UserLogin } from '@/domain/contracts';
 import { LoadUserByUsername, HashComparer, Encrypter } from '@/data/contracts';
-import { UserNotFoundError, InvalidPasswordError } from '@/domain/errors';
+import { UserNotFoundError, InvalidPasswordError, InactiveUserError } from '@/domain/errors';
 import { StatusTypes, UserRoles } from '@/domain/helpers';
 
 class LoadUserByUsernameRepositoryStub implements LoadUserByUsername {
@@ -77,6 +77,18 @@ describe('UserLoginUsecase', () => {
     jest.spyOn(loadUserByUsernameRepository, 'loadByUsername').mockResolvedValueOnce(null);
     const output = await sut.handle(mockInput());
     expect(output).toEqual(new UserNotFoundError());
+  });
+
+  it('Should return InactiveUserError if the loaded user is inactive', async () => {
+    const { loadUserByUsernameRepository, sut } = makeSut();
+    jest
+      .spyOn(loadUserByUsernameRepository, 'loadByUsername')
+      .mockResolvedValueOnce({
+        ...loadUserByUsernameRepository.result,
+        status: StatusTypes.INACTIVE,
+      });
+    const output = await sut.handle(mockInput());
+    expect(output).toEqual(new InactiveUserError());
   });
 
   it('Should throw if LoadUserByUsernameRepository throws', async () => {
