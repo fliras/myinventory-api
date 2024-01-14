@@ -1,7 +1,8 @@
 import UserLoginUsecase from '@/domain/usecases/user-login-usecase';
 import { UserLogin } from '@/domain/contracts';
+import { CheckUserByUsername } from '@/data/contracts';
 
-class CheckUserByUsernameRepositoryStub {
+class CheckUserByUsernameRepositoryStub implements CheckUserByUsername {
   async checkByUsername() {
     return true;
   }
