@@ -3,7 +3,7 @@ export default  {
   collectCoverageFrom: [
     '<rootDir>/src/**/*',
     '!<rootDir>/src/main/**/*',
-    '!<rootDir>/src/**/index.js'
+    '!<rootDir>/src/**/index.ts'
   ],
   moduleNameMapper: {
     '@/tests/(.+)': '<rootDir>/__tests__/$1',
