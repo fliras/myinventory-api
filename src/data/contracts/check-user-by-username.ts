@@ -1,3 +1,3 @@
-export interface CheckUserByUsername<Input = string, Output = boolean> {
-  checkByUsername(username: Input): Promise<Output>;
+export interface CheckUserByUsername {
+  checkByUsername(username: string): Promise<boolean>;
 }
