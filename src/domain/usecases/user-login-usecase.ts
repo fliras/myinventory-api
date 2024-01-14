@@ -18,7 +18,7 @@ export default class UserLoginUsecase implements UserLogin {
     );
     if (!isPasswordValid) return new InvalidPasswordError();
     const payload = { id: loadedUser.id, role: loadedUser.role };
-    await this.encrypter.encrypt(payload);
-    return '';
+    const accessToken = await this.encrypter.encrypt(payload);
+    return accessToken;
   }
 }
