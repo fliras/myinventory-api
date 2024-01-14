@@ -91,5 +91,12 @@ describe('UserLoginUsecase', () => {
     jest.spyOn(hashComparer, 'compare').mockResolvedValueOnce(false);
     const output = await sut.handle(mockInput());
     expect(output).toEqual(new InvalidPasswordError());
-  })
+  });
+
+  it('Should throw if hashComparer throws', async () => {
+    const { hashComparer, sut } = makeSut();
+    jest.spyOn(hashComparer, 'compare').mockImplementationOnce(mockThrow);
+    const output = sut.handle(mockInput());
+    expect(output).rejects.toThrow();
+  });
 });
