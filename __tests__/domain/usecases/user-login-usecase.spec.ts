@@ -1,6 +1,6 @@
 import UserLoginUsecase from '@/domain/usecases/user-login-usecase';
 import { UserLogin } from '@/domain/contracts';
-import { LoadUserByUsername } from '@/data/contracts';
+import { LoadUserByUsername, HashComparer } from '@/data/contracts';
 import { UserNotFoundError } from '@/domain/errors';
 import { StatusTypes, UserRoles } from '@/domain/helpers';
 
@@ -9,6 +9,7 @@ class LoadUserByUsernameRepositoryStub implements LoadUserByUsername {
     id: 1,
     name: 'any-name',
     username: 'any-username',
+    hashedPassword: 'hashed-password',
     role: UserRoles.OPERATOR,
     status: StatusTypes.ACTIVE,
     createdAt: new Date(),
@@ -20,16 +21,25 @@ class LoadUserByUsernameRepositoryStub implements LoadUserByUsername {
   }
 }
 
+class HashComparerStub implements HashComparer {
+  async compare(): Promise<boolean> {
+    return true;
+  }
+}
+
 type SutTypes = {
   loadUserByUsernameRepository: LoadUserByUsernameRepositoryStub;
+  hashComparer: HashComparerStub;
   sut: UserLoginUsecase;
 };
 
 const makeSut = (): SutTypes => {
   const loadUserByUsernameRepository = new LoadUserByUsernameRepositoryStub();
-  const sut = new UserLoginUsecase(loadUserByUsernameRepository);
+  const hashComparer = new HashComparerStub();
+  const sut = new UserLoginUsecase(loadUserByUsernameRepository, hashComparer);
   return {
     loadUserByUsernameRepository,
+    hashComparer,
     sut,
   };
 };
@@ -64,5 +74,15 @@ describe('UserLoginUsecase', () => {
     jest.spyOn(loadUserByUsernameRepository, 'loadByUsername').mockImplementationOnce(mockThrow);
     const output = sut.handle(mockInput());
     expect(output).rejects.toThrow();
+  });
+
+  it('Should call hashComparer with the correct values', async () => {
+    const { hashComparer, loadUserByUsernameRepository, sut } = makeSut();
+    const hashComparerSpy = jest.spyOn(hashComparer, 'compare');
+    const input = mockInput();
+    await sut.handle(input);
+    const { password } = input;
+    const { hashedPassword } = loadUserByUsernameRepository.result;
+    expect(hashComparerSpy).toHaveBeenCalledWith(password, hashedPassword);
   });
 });
