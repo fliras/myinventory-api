@@ -1,6 +1,6 @@
 import { StatusTypes, UserRoles } from '@/domain/helpers';
 
-export type User = {
+export type UserEntity = {
   readonly id: number;
   name: string;
   username: string;
