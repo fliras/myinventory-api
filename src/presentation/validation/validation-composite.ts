@@ -1,6 +1,6 @@
-import { Validator } from '@/presentation/contracts/validator';
+import { Validator } from '@/presentation/contracts';
 
-export default class ValidationComposite implements Validator {
+export class ValidationComposite implements Validator {
   constructor(private readonly validators: Validator[]) {}
 
   validate(input: any): Error | void {

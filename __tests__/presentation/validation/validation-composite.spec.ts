@@ -1,5 +1,5 @@
-import ValidationComposite from '@/presentation/validation/validation-composite';
-import { Validator } from '@/presentation/contracts/validator';
+import { ValidationComposite } from '@/presentation/validation';
+import { Validator } from '@/presentation/contracts';
 
 class ValidatorStub implements Validator {
   validate(): Error | void {}

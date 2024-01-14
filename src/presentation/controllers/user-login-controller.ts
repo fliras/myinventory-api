@@ -1,8 +1,8 @@
-import { badRequest, serverError, ok } from '@/presentation/helpers/http';
+import { badRequest, serverError, ok } from '@/presentation/helpers';
 import { Controller, HttpResponse, Validator } from '@/presentation/contracts';
 import { UserLogin } from '@/domain/contracts';
 
-export default class UserLoginController implements Controller {
+export class UserLoginController implements Controller {
   constructor(
     private readonly validator: Validator,
     private readonly userLoginUsecase: UserLogin,

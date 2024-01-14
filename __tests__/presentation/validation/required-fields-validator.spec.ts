@@ -1,5 +1,5 @@
-import RequiredFieldsValidator from '@/presentation/validation/required-fields-validator';
-import MissingParamError from '@/presentation/errors/missing-param-error';
+import { RequiredFieldsValidator } from '@/presentation/validation';
+import { MissingParamError } from '@/presentation/errors';
 
 describe('RequiredFieldsValidator', () => {
   it('Should return MissingParamError if the specified field is not provided', () => {

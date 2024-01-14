@@ -1,5 +1,5 @@
-import UserLoginController from '@/presentation/controllers/user-login-controller';
-import { badRequest, serverError, ok } from '@/presentation/helpers/http';
+import { UserLoginController } from '@/presentation/controllers';
+import { badRequest, serverError, ok } from '@/presentation/helpers';
 import { Validator } from '@/presentation/contracts';
 import { UserLogin } from '@/domain/contracts';
 
