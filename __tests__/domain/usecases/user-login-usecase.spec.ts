@@ -118,4 +118,11 @@ describe('UserLoginUsecase', () => {
     const { id, role } = loadUserByUsernameRepository.result;
     expect(encrypterSpy).toHaveBeenCalledWith({ id, role });
   });
+
+  it('Should throw if encrypter throws', async () => {
+    const { encrypter, sut } = makeSut();
+    jest.spyOn(encrypter, 'encrypt').mockImplementationOnce(mockThrow);
+    const output = sut.handle(mockInput());
+    expect(output).rejects.toThrow();
+  });
 });
