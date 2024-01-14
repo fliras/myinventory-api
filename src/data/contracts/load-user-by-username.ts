@@ -5,5 +5,5 @@ export interface LoadUserByUsername {
 }
 
 export namespace LoadUserByUsername {
-  export type Output = User | null;
+  export type Output = (User & { hashedPassword: string }) | null;
 }
