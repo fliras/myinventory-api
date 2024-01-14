@@ -1,7 +1,7 @@
 import UserLoginUsecase from '@/domain/usecases/user-login-usecase';
 import { UserLogin } from '@/domain/contracts';
 import { LoadUserByUsername, HashComparer } from '@/data/contracts';
-import { UserNotFoundError } from '@/domain/errors';
+import { UserNotFoundError, InvalidPasswordError } from '@/domain/errors';
 import { StatusTypes, UserRoles } from '@/domain/helpers';
 
 class LoadUserByUsernameRepositoryStub implements LoadUserByUsername {
@@ -85,4 +85,11 @@ describe('UserLoginUsecase', () => {
     const { hashedPassword } = loadUserByUsernameRepository.result;
     expect(hashComparerSpy).toHaveBeenCalledWith(password, hashedPassword);
   });
+
+  it('Should return InvalidPasswordError if hashComparer returns false', async () => {
+    const { hashComparer, sut } = makeSut();
+    jest.spyOn(hashComparer, 'compare').mockResolvedValueOnce(false);
+    const output = await sut.handle(mockInput());
+    expect(output).toEqual(new InvalidPasswordError());
+  })
 });
