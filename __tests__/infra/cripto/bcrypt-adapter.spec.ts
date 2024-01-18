@@ -7,6 +7,10 @@ jest.mock('bcryptjs', () => ({
   }
 }))
 
+const mockThrow = () => {
+  throw new Error();
+}
+
 describe('BcryptAdapter', () => {
   describe('compare()', () => {
     it('Should call compare with the correct values', async () => {
@@ -14,6 +18,13 @@ describe('BcryptAdapter', () => {
       const bcryptSpy = jest.spyOn(bcrypt, 'compare');
       await sut.compare('any-text', 'any-hash');
       expect(bcryptSpy).toHaveBeenCalledWith('any-text', 'any-hash')
+    })
+
+    it('Should throw if bcrypt.compare throws', async () => {
+      const sut = new BcryptAdapter();
+      jest.spyOn(bcrypt, 'compare').mockImplementationOnce(mockThrow);
+      const output = sut.compare('any-text', 'any-hash');
+      expect(output).rejects.toThrow();
     })
   })
 });
