@@ -34,6 +34,12 @@ describe('BcryptAdapter', () => {
         const output = await sut.compare('any-text', 'any-hash');
         expect(output).toBe(false);
       });
+
+      it('when bcrypt.compare returns true', async () => {
+        const sut = new BcryptAdapter();
+        const output = await sut.compare('any-text', 'any-hash');
+        expect(output).toBe(true);
+      });
     });
   });
 });
