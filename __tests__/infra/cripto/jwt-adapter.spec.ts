@@ -25,12 +25,14 @@ const mockThrow = () => {
   throw new Error();
 };
 
+const mockPayload = () => ({ id: 666 });
+
 describe('JwtAdapter', () => {
   describe('encrypt()', () => {
     it('Should call jwt.sign with the correct values', async () => {
       const { secret, sut } = makeSut();
       const signSpy = jest.spyOn(jwt, 'sign');
-      const payload = { id: 666 };
+      const payload = mockPayload();
       await sut.encrypt(payload);
       expect(signSpy).toHaveBeenCalledWith(payload, secret);
     });
@@ -38,8 +40,14 @@ describe('JwtAdapter', () => {
     it('Should throw if jwt.sign throws', async () => {
       const { sut } = makeSut();
       jest.spyOn(jwt, 'sign').mockImplementationOnce(mockThrow);
-      const output = sut.encrypt({ id: 666 });
+      const output = sut.encrypt(mockPayload());
       expect(output).rejects.toThrow();
+    });
+
+    it('Should return the generated token on success', async () => {
+      const { sut } = makeSut();
+      const output = await sut.encrypt(mockPayload());
+      expect(output).toBe('any-token');
     });
   });
 });
