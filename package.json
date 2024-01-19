@@ -18,6 +18,7 @@
     "@commitlint/config-conventional": "^18.4.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/jest": "^29.5.11",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.10.7",
     "@typescript-eslint/eslint-plugin": "^6.18.0",
     "@typescript-eslint/parser": "^6.18.0",
@@ -33,6 +34,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3"
   },
   "_moduleAliases": {
