@@ -2,3 +2,4 @@ node_modules
 dist
 coverage
 jest.config.js
+src/infra/database/knex/migrations
