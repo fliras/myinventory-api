@@ -3,7 +3,9 @@ export default  {
   collectCoverageFrom: [
     '<rootDir>/src/**/*',
     '!<rootDir>/src/main/**/*',
-    '!<rootDir>/src/**/index.ts'
+    '!<rootDir>/src/**/index.ts',
+    '!<rootDir>/src/infra/database/knex/knexfile.js',
+    '!<rootDir>/src/infra/database/knex/migrations/**/*'
   ],
   moduleNameMapper: {
     '@/tests/(.+)': '<rootDir>/__tests__/$1',
