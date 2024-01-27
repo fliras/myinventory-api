@@ -10,7 +10,8 @@
     "test:coverage": "npm t -- --coverage",
     "build": "rimraf dist && tsc -p tsconfig.build.json",
     "start": "node dist/main/server.js",
-    "db:migrate": "knex migrate:latest --knexfile=./src/infra/database/knex/knexfile.ts"
+    "db:migrate": "knex migrate:latest --knexfile=./src/infra/database/knex/knexfile.ts",
+    "db:add-migration": "knex migrate:make --knexfile=./src/infra/database/knex/knexfile.ts"
   },
   "keywords": [],
   "author": "Felipe Lira",
