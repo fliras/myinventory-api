@@ -1,2 +1,2 @@
-export * from './required-fields-validator';
+export * from './required-field-validator';
 export * from './validation-composite';

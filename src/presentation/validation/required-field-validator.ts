@@ -1,7 +1,7 @@
 import { Validator } from '@/presentation/contracts';
 import { MissingParamError } from '@/presentation/errors';
 
-export class RequiredFieldsValidator implements Validator {
+export class RequiredFieldValidator implements Validator {
   constructor(private readonly field: string) {}
 
   validate(input: any): Error | void {
