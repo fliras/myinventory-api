@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 import setupRoutes from '@/main/routes';
-import { bodyParser } from '../middlewares/body-parser';
+import { bodyParser } from '@/main/middlewares/body-parser';
 
 export default (): Express => {
   const app = express();

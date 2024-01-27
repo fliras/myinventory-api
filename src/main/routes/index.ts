@@ -1,4 +1,4 @@
-import setupUsersRoutes from './users';
+import setupUsersRoutes from '@/main/routes/users';
 import { Express, Router } from 'express';
 
 export default (app: Express) => {
