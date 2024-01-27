@@ -9,7 +9,8 @@
     "test:staged": "npm t -- --findRelatedTests",
     "test:coverage": "npm t -- --coverage",
     "build": "rimraf dist && tsc -p tsconfig.build.json",
-    "start": "node dist/main/server.js"
+    "start": "node dist/main/server.js",
+    "db:migrate": "knex migrate:latest --knexfile=./src/infra/database/knex/knexfile.ts"
   },
   "keywords": [],
   "author": "Felipe Lira",
