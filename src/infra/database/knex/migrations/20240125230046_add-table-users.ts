@@ -1,4 +1,6 @@
-exports.up = function (knex) {
+import type { Knex } from 'knex';
+
+export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('users', (table) => {
     table.increments('user_id').primary();
     table.string('name', 60).notNullable();
@@ -8,8 +10,8 @@ exports.up = function (knex) {
     table.timestamps(true, true);
     table.enum('role', ['ADMIN', 'OPERATOR']).notNullable();
   });
-};
+}
 
-exports.down = function (knex) {
-  return knex.schema.dropTable('users');
-};
+export async function down(knex: Knex): Promise<void> {
+  return knex.schema.dropTable('users')
+}
