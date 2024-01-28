@@ -8,11 +8,11 @@ export class UserLoginController implements Controller {
     private readonly userLoginUsecase: UserLogin,
   ) {}
 
-  async handle(request: UserLoginController.Request): Promise<HttpResponse> {
+  async handle({ body }: UserLoginController.Request): Promise<HttpResponse> {
     try {
-      const validation = this.validator.validate(request);
+      const validation = this.validator.validate(body);
       if (validation instanceof Error) return badRequest(validation);
-      const result = await this.userLoginUsecase.handle(request);
+      const result = await this.userLoginUsecase.handle(body);
       if (result instanceof Error) return badRequest(result);
       return ok({ accessToken: result });
     } catch (error) {
@@ -24,7 +24,9 @@ export class UserLoginController implements Controller {
 
 export namespace UserLoginController {
   export type Request = {
-    username: string;
-    password: string;
+    body: {
+      username: string;
+      password: string;
+    };
   };
 }

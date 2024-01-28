@@ -31,9 +31,11 @@ const makeSut = (): sutTypes => {
   };
 };
 
-const mockRequest = () => ({
-  username: 'any-username',
-  password: 'any-password',
+const mockRequest = (): UserLoginController.Request => ({
+  body: {
+    username: 'any-username',
+    password: 'any-password',
+  },
 });
 
 const mockThrow = () => {
@@ -46,7 +48,7 @@ describe('UserLoginController', () => {
     const validatorSpy = jest.spyOn(validator, 'validate');
     const request = mockRequest();
     await sut.handle(request);
-    expect(validatorSpy).toHaveBeenCalledWith(request);
+    expect(validatorSpy).toHaveBeenCalledWith(request.body);
   });
 
   it('Should return badRequest if validator returns an error', async () => {
@@ -62,7 +64,7 @@ describe('UserLoginController', () => {
     const userLoginSpy = jest.spyOn(userLoginUsecase, 'handle');
     const request = mockRequest();
     await sut.handle(request);
-    expect(userLoginSpy).toHaveBeenCalledWith(request);
+    expect(userLoginSpy).toHaveBeenCalledWith(request.body);
   });
 
   it('Should return badRequest if userLoginUsecase returns an error', async () => {
