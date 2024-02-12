@@ -1,5 +1,6 @@
 import { AddUserController } from '@/presentation/controllers/add-user-controller';
 import { Validator } from '@/presentation/contracts';
+import { badRequest } from '@/presentation/helpers';
 
 type SutTypes = {
   validator: Validator;
@@ -32,5 +33,13 @@ describe('AddUserController', () => {
     const request = mockRequest();
     await sut.handle(request);
     expect(validator.validate).toHaveBeenCalledWith(request);
+  });
+
+  it('Should return badRequest if validator returns an error', async () => {
+    const { validator, sut } = makeSut();
+    const error = new Error('random-error');
+    jest.spyOn(validator, 'validate').mockReturnValue(error);
+    const output = await sut.handle(mockRequest());
+    expect(output).toEqual(badRequest(error));
   });
 });
